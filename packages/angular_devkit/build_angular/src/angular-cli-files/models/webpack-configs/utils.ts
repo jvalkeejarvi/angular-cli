@@ -87,5 +87,9 @@ export function getSourceMapDevTool(
     filename: inlineSourceMap ? undefined : '[file].map',
     include,
     append: hiddenSourceMap ? false : undefined,
+    exclude: [
+      'vendor.js',
+      'polyfills.js'
+    ],
   });
 }

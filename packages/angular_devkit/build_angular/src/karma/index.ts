@@ -124,6 +124,7 @@ export class KarmaBuilder implements Builder<KarmaBuilderSchema> {
     options: NormalizedKarmaBuilderSchema,
   ) {
     let wco: WebpackConfigOptions;
+    console.log(options.sourceMap);
 
     const tsConfigPath = getSystemPath(resolve(root, normalize(options.tsConfig)));
     const tsConfig = readTsconfig(tsConfigPath);

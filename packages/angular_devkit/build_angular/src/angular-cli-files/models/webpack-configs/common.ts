@@ -33,6 +33,7 @@ export const buildOptimizerLoader: string = g['_DevKitIsLocal']
 // tslint:disable-next-line:no-big-function
 export function getCommonConfig(wco: WebpackConfigOptions) {
   const { root, projectRoot, buildOptions } = wco;
+  console.log(buildOptions.sourceMap);
   const { styles: stylesOptimization, scripts: scriptsOptimization } = buildOptions.optimization;
   const {
     styles: stylesSourceMap,
@@ -41,6 +42,7 @@ export function getCommonConfig(wco: WebpackConfigOptions) {
   } = buildOptions.sourceMap;
 
   const nodeModules = findUp('node_modules', projectRoot);
+  console.log(nodeModules);
   if (!nodeModules) {
     throw new Error('Cannot locate node_modules directory.');
   }
@@ -176,6 +178,7 @@ export function getCommonConfig(wco: WebpackConfigOptions) {
 
   let sourceMapUseRule;
   if ((scriptsSourceMap || stylesSourceMap) && vendorSourceMap) {
+    console.log('vendorSourceMaps');
     sourceMapUseRule = {
       use: [
         {
@@ -326,8 +329,12 @@ export function getCommonConfig(wco: WebpackConfigOptions) {
           ...buildOptimizerUseRule,
         },
         {
-          test: /\.js$/,
-          exclude: /(ngfactory|ngstyle).js$/,
+          // importAll(require.context("./", true, /^(?!(node_modules[\\\/].*\.js$)\.js$/)));
+          test: /^(?!node_modules[\\\/].*\.js$)\.js$/,
+          exclude: [
+            /(ngfactory|ngstyle).js$/,
+            /.*[\\\/]node_modules[\\\/].*/,
+          ],
           enforce: 'pre',
           ...sourceMapUseRule,
         },
